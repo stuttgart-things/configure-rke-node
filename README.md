@@ -10,13 +10,15 @@ Example play (RKE2)
 - hosts: all 
   become: true
   
-  vars: cloudinit: False 
+  vars: 
+    cloudinit: False 
     create_rke_user: false 
     update_os: true
     install_docker: false
     install_docker_compose: false 
     set_docker_proxy: false 
-    template_creation_setup: false 
+    template_creation_setup: false
+    
   roles: 
     - role: configure-rke-node
 ```
