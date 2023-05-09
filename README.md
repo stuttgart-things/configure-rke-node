@@ -11,7 +11,7 @@ Example play (RKE2)
   become: true
   
   vars: 
-    cloudinit: False 
+    cloudinit: false 
     create_rke_user: false 
     update_os: true
     install_docker: false
