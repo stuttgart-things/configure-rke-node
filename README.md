@@ -5,6 +5,12 @@ prepares machines for rancher-ha deployment or as base installation for a downst
 
 Example play (RKE2)
 -------------------
+```
+pip3 install netaddr
+```
+
+Example play (RKE2)
+-------------------
 
 ```
 - hosts: all 
