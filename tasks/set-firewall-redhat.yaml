@@ -1,0 +1,59 @@
+---
+- name: Ensure firewalld is started
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: yes
+  tags:
+    - firewall
+    
+- name: Allow all traffic from cluster CIDR
+  ansible.posix.firewalld:
+    zone: trusted
+    source: "{{ cluster_cidr }}"
+    state: enabled
+    immediate: yes
+    permanent: yes
+  tags:
+    - firewall
+
+- name: Open firewall ports tcp
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+  loop: "{{ fw_ports_tcp }}"
+
+- name: Open firewall ports udp
+  ansible.posix.firewalld:
+    port: "{{ item }}/udp"
+    permanent: yes
+    state: enabled
+  loop: "{{ fw_ports_udp }}"
+
+- name: Set sysctl value net.bridge.bridge-nf-call-iptables
+  ansible.posix.sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+  ignore_errors: true
+  tags:
+    - firewall
+
+- name: Add masquerade
+  ansible.posix.firewalld:
+    masquerade: yes
+    state: enabled
+    permanent: yes 
+  tags:
+    - firewall
+    
+- name: Restart firewalld for changes to take effect 
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: firewalld  
+  tags:
+    - firewall

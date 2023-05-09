@@ -1,0 +1,5 @@
+---
+- name: Enable fips
+  ansible.builtin.shell: |
+    sysctl -a | grep fips
+    fips-mode-setup --enable

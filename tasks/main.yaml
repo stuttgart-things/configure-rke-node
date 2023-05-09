@@ -1,0 +1,60 @@
+---
+- name: Load variables dependent on os(family)
+  ansible.builtin.include_vars: "{{lookup('first_found', params)}}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_os_family }}-{{ ansible_distribution_version }}.yaml'
+        - '{{ ansible_os_family }}.yaml'
+      paths:
+        - 'vars'
+
+- name: Install required packages remote
+  include_role:
+    name: install-requirements
+  vars:
+    update_packages: false
+    os_packages: "{{ prerequisites }}"
+    state: present
+
+- name: Disable selinux
+  ansible.builtin.include_tasks: disable-selinux.yaml
+
+- name: Enable fips
+  ansible.builtin.include_tasks: enable-fips.yaml
+  when: ansible_os_family == 'RedHat'
+
+- name: Enable kernel modules
+  ansible.builtin.include_tasks: enable-kernel-modules.yaml
+
+- name: Set filesystem settings
+  ansible.builtin.include_tasks: set-filesystem.yaml
+
+- name: Set network settings
+  ansible.builtin.include_tasks: set-network.yaml
+
+- name: Set debian firewall
+  ansible.builtin.include_tasks: set-firewall-debian.yaml
+  when: ansible_distribution == 'Ubuntu'
+  
+- name: Set firewall for RedHat or Suse based systems
+  ansible.builtin.include_tasks: set-firewall-redhat.yaml
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Suse'
+
+- name: Install docker
+  ansible.builtin.include_tasks: install-docker.yaml
+  when: install_docker|bool
+  
+- name: Create rke user
+  ansible.builtin.include_tasks: create-rke-user.yaml
+  when: not template_creation_setup and create_rke_user|bool
+
+- name: Reboot the machines 
+  ansible.builtin.reboot:
+  tags:
+    - reboot
+  when: not template_creation_setup
+
+- name: Include cloud-init Tasks
+  ansible.builtin.include_tasks: cloud-init.yaml
+  when: cloudinit|bool

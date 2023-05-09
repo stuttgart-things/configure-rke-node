@@ -1,0 +1,30 @@
+---
+- name: Install cloud-init
+  ansible.builtin.package:
+    name:
+      - cloud-init
+    state: present
+
+- name: Install cloud-utils
+  ansible.builtin.package:
+    name:
+      - cloud-utils
+    state: present
+  when: ansible_distribution_major_version != '8'
+    
+- name: Find all cfg files in {{ cloud_init_config_dir }}
+  ansible.builtin.find:
+    paths: "{{ cloud_init_config_dir }}"
+    patterns: "*.cfg"
+  register: cfg_files_to_delete
+  
+- name: Remove all may existing cloud config
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ cfg_files_to_delete.files }}"
+
+- name: Reset may existing cloud config
+  ansible.builtin.shell: |
+    cloud-init clean -s -l
+  ignore_errors: true

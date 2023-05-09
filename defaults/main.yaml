@@ -1,0 +1,83 @@
+---
+create_rke_user: false
+update_os: true
+install_docker: true
+install_docker_compose: false
+set_docker_proxy: false
+template_creation_setup: false
+cloudinit: False
+cluster_interface: "{{ ansible_default_ipv4.interface }}"
+cluster_cidr: "{{ [ansible_facts[cluster_interface].ipv4.network, ansible_facts[cluster_interface].ipv4.netmask] | join('/') | ipaddr('net') }}"
+
+additional_group: rke
+
+prerequisites:
+  - tar
+  - unzip
+
+rke_user:
+  - username: rke
+    name: rke user
+    groups: ['{{ admin_group }}', '{{ additional_group }}']
+    home: /home/rke
+    profile: |
+      alias ll='ls -ahl'
+    ssh_key:
+      - "{{ lookup('file', '{{ path_to_private_key }}.pub') }}"
+    enable_ssh_tcp_forwarding: True
+
+cloud_init_config_dir: /etc/cloud/cloud.cfg.d
+
+modules_conf_path: /etc/modules-load.d/modules.conf
+
+fw_ports_tcp:
+  - 22
+  - 443
+  - 2376
+  - 2379
+  - 2380
+  - 6443
+  - 8443
+  - 9099
+  - 9100
+  - 9345
+  - 9443
+  - 9796
+  - 10250
+  - 10252
+  - 10254
+  - "{{ '30000-33000' if ansible_os_family == 'RedHat' else '30000:33000'  }}"
+  
+fw_ports_udp:
+  - 8472
+  - 7489
+
+kernel_modules:
+  - br_netfilter
+  - ip6_udp_tunnel
+  - ip_set
+  - ip_set_hash_ip
+  - ip_set_hash_net
+  - iptable_filter
+  - iptable_nat
+  - iptable_mangle
+  - iptable_raw
+  - nf_conntrack_netlink
+  - nf_conntrack
+  - nf_defrag_ipv4
+  - nf_nat
+  - nfnetlink
+  - udp_tunnel
+  - veth
+  - vxlan
+  - x_tables
+  - xt_addrtype
+  - xt_conntrack
+  - xt_comment
+  - xt_mark
+  - xt_multiport
+  - xt_nat
+  - xt_recent
+  - xt_set
+  - xt_statistic
+  - xt_tcpudp

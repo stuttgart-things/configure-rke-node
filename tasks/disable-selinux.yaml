@@ -1,0 +1,15 @@
+---
+- name: Install required packages remote
+  ansible.builtin.include_role:
+    name: install-requirements 
+  vars:
+    update_packages: true
+    os_packages: "{{ se_linux }}"
+    state: present
+
+- name: Ensure SELinux is disabled
+  ansible.posix.selinux:
+    state: disabled
+  tags:
+    - selinux
+  ignore_errors: true

@@ -1,0 +1,16 @@
+---
+- name: Create sysctl settings file for bridge settings
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/k8s.conf
+    content: |
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+  register: sysctl_k8s_conf
+  tags:
+    - network
+
+- name: Load new sysctl settings
+  ansible.builtin.command: sysctl --system
+  when: sysctl_k8s_conf is changed
+  tags:
+    - network

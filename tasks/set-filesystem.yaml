@@ -1,0 +1,38 @@
+---
+- name: Install required packages remote
+  ansible.builtin.include_role:
+    name: install-requirements 
+  vars:
+    update_packages: "{{ update_os }}"
+    os_packages: "{{ nfs_packages_client }}"
+    state: present
+  tags:
+    - utils
+
+- name: Remove swap volumes from /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    state: absent
+    regexp: '^[^\s]+\s+[^\s]+\s+swap\s+'
+  register: remove_swap_volumes
+  tags:
+    - swap
+
+- name: Disable swap
+  ansible.builtin.command: swapoff --all
+  when: remove_swap_volumes is changed
+  tags:
+    - swap
+
+- name: Disable swap
+  ansible.builtin.command: swapoff --all
+  when: remove_swap_volumes is changed
+  tags:
+    - swap
+
+- name: Set filesystem watchers
+  ansible.builtin.shell: |
+    sysctl -w fs.inotify.max_user_watches=100000
+    sysctl -w fs.inotify.max_user_instances=100000
+  tags:
+    - swap

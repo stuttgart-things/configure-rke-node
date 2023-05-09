@@ -1,0 +1,7 @@
+---
+- name: Install docker
+  ansible.builtin.include_role:
+    name: install-configure-docker 
+  vars:
+    docker_install_compose: "{{ install_docker_compose }}"
+    set_proxy: "{{ set_docker_proxy }}"
