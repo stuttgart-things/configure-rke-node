@@ -1,4 +1,4 @@
-stuttart-things/configure-rke-node
+stuttgart-things/configure-rke-node
 ====================================
 
 prepares machines for rancher-ha deployment or as base installation for a downstream cluster node (w/ option for cloud-init). ([Rancher OS Requirements](https://rancher.com/docs/rke/latest/en/os/#operating-system)).
