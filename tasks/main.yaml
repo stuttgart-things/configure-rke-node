@@ -35,7 +35,7 @@
 
 - name: Set debian firewall
   ansible.builtin.include_tasks: set-firewall-debian.yaml
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_os_family == 'Debian'
   
 - name: Set firewall for RedHat or Suse based systems
   ansible.builtin.include_tasks: set-firewall-redhat.yaml
