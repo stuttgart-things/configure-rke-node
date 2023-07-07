@@ -1,4 +1,10 @@
 ---
+- name: Ensure UFW is installed
+  ansible.builtin.package:
+    name: ufw
+    state: latest
+  when: ansible_distribution == 'Debian'
+
 - name: Ensure UFW is started
   ansible.builtin.service:
     name: ufw
