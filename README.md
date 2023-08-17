@@ -4,6 +4,7 @@ stuttgart-things/configure-rke-node
 prepares machines for rancher-ha deployment or as base installation for a downstream cluster node (w/ option for cloud-init). ([Rancher OS Requirements](https://rancher.com/docs/rke/latest/en/os/#operating-system)).
 
 ## INSTALLATION
+
 ```
 cat <<EOF > /tmp/requirements.yaml
 roles:
@@ -13,7 +14,10 @@ roles:
 - src: https://github.com/stuttgart-things/install-requirements.git
   scm: git
   version: 05092023
-  
+- src: https://github.com/stuttgart-things/install-configure-docker.git
+  scm: git
+
+
 collections: 
 - name: community.crypto 
   version: 2.13.0 
