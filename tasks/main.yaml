@@ -45,10 +45,6 @@
   ansible.builtin.include_tasks: install-docker.yaml
   when: install_docker|bool
   
-- name: Create rke user
-  ansible.builtin.include_tasks: create-rke-user.yaml
-  when: not template_creation_setup and create_rke_user|bool
-
 - name: Reboot the machines 
   ansible.builtin.reboot:
   tags:
