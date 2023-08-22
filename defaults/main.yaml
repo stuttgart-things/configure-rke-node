@@ -15,17 +15,6 @@ prerequisites:
   - tar
   - unzip
 
-rke_user:
-  - username: rke
-    name: rke user
-    groups: ['{{ admin_group }}', '{{ additional_group }}']
-    home: /home/rke
-    profile: |
-      alias ll='ls -ahl'
-    ssh_key:
-      - "{{ lookup('file', '{{ path_to_private_key }}.pub') }}"
-    enable_ssh_tcp_forwarding: True
-
 cloud_init_config_dir: /etc/cloud/cloud.cfg.d
 
 modules_conf_path: /etc/modules-load.d/modules.conf
