@@ -14,6 +14,7 @@ additional_group: rke
 prerequisites:
   - tar
   - unzip
+  - jq
 
 cloud_init_config_dir: /etc/cloud/cloud.cfg.d
 
