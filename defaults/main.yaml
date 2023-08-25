@@ -17,9 +17,7 @@ prerequisites:
   - jq
 
 cloud_init_config_dir: /etc/cloud/cloud.cfg.d
-
 modules_conf_path: /etc/modules-load.d/modules.conf
-
 fw_ports_tcp:
   - 22
   - 443
