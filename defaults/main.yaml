@@ -11,6 +11,10 @@ cluster_cidr: "{{ [ansible_facts[cluster_interface].ipv4.network, ansible_facts[
 
 additional_group: rke
 
+python_prerequisites:
+  - name: kubernetes
+  - name: openshift
+  
 prerequisites:
   - tar
   - unzip
