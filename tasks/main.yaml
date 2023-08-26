@@ -16,7 +16,8 @@
     update_packages: false
     os_packages: "{{ prerequisites }}"
     state: present
-
+    python_modules: "{{ python_prerequisites }}"
+    
 - name: Disable selinux
   ansible.builtin.include_tasks: disable-selinux.yaml
 
