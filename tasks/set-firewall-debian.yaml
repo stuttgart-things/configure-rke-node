@@ -19,13 +19,6 @@
   tags:
     - firewall
 
-- name: Debian - Allow all access from cluster_cidr to this host
-  community.general.ufw:
-    rule: allow
-    src: "{{ cluster_cidr }}"
-  tags:
-    - firewall
-
 - name: Open firewall ports tcp
   community.general.ufw:
     rule: allow
