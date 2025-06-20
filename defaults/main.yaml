@@ -6,9 +6,6 @@ install_docker_compose: false
 set_docker_proxy: false
 template_creation_setup: false
 cloudinit: False
-cluster_interface: "{{ ansible_default_ipv4.interface }}"
-cluster_cidr: "{{ [ansible_facts[cluster_interface].ipv4.network, ansible_facts[cluster_interface].ipv4.netmask] | join('/') | ipaddr('net') }}"
-
 additional_group: rke
 
 python_prerequisites:
