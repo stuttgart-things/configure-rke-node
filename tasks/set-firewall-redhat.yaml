@@ -6,17 +6,7 @@
     enabled: yes
   tags:
     - firewall
-    
-- name: Allow all traffic from cluster CIDR
-  ansible.posix.firewalld:
-    zone: trusted
-    source: "{{ cluster_cidr }}"
-    state: enabled
-    immediate: yes
-    permanent: yes
-  tags:
-    - firewall
-
+ 
 - name: Open firewall ports tcp
   ansible.posix.firewalld:
     port: "{{ item }}/tcp"
