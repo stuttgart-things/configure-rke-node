@@ -1,8 +1,8 @@
 ---
 se_linux:
-  - policycoreutils 
+  - policycoreutils
   - "{{ policycoreutils-python if ansible_distribution_major_version == '7' else 'policycoreutils-python3' }}"
-  - setools 
+  - setools
 
 nfs_packages_client:
   - nfs-utils

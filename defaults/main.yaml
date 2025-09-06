@@ -1,5 +1,4 @@
 ---
-create_rke_user: false
 update_os: true
 install_docker: true
 install_docker_compose: false
@@ -11,7 +10,7 @@ additional_group: rke
 python_prerequisites:
   - name: kubernetes
   - name: openshift
-  
+
 prerequisites:
   - tar
   - unzip
@@ -36,7 +35,7 @@ fw_ports_tcp:
   - 10252
   - 10254
   - "{{ '30000-33000' if ansible_os_family == 'RedHat' else '30000:33000'  }}"
-  
+
 fw_ports_udp:
   - 8472
   - 7489

@@ -6,7 +6,7 @@
     enabled: yes
   tags:
     - firewall
- 
+
 - name: Open firewall ports tcp
   ansible.posix.firewalld:
     port: "{{ item }}/tcp"
@@ -36,14 +36,14 @@
   ansible.posix.firewalld:
     masquerade: yes
     state: enabled
-    permanent: yes 
+    permanent: yes
   tags:
     - firewall
-    
-- name: Restart firewalld for changes to take effect 
+
+- name: Restart firewalld for changes to take effect
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
-    name: firewalld  
+    name: firewalld
   tags:
     - firewall

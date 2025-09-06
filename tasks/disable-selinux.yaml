@@ -1,7 +1,7 @@
 ---
 - name: Install required packages remote
   ansible.builtin.include_role:
-    name: install-requirements 
+    name: install-requirements
   vars:
     update_packages: true
     os_packages: "{{ se_linux }}"

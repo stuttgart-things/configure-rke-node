@@ -1,4 +1,4 @@
----    
+---
 - name: Enable kernel modules
   community.general.modprobe:
     name: "{{ item }}"
@@ -7,7 +7,7 @@
     - "{{ kernel_modules }}"
   tags:
     - kernel
-      
+
 - name: Make kernel modules reboot resistent
   ansible.builtin.lineinfile:
     path: "{{ modules_conf_path }}"

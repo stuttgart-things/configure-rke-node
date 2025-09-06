@@ -12,7 +12,7 @@
     enabled: yes
   tags:
     - firewall
-  
+
 - name: Ensure Firewall is enabled
   community.general.ufw:
     state: enabled
