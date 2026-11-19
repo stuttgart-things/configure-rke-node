@@ -30,9 +30,25 @@
   tags:
     - swap
 
-- name: Set filesystem watchers
-  ansible.builtin.shell: |
-    sysctl -w fs.inotify.max_user_watches=100000
-    sysctl -w fs.inotify.max_user_instances=100000
+# inotify limits as a sysctl.d file, so they survive a reboot. `sysctl -w`
+# alone was lost on the next boot, and Ubuntu's 128 instances per UID are too
+# few once containerd, kubelet and log shippers (fluent-bit: "Too many open
+# files") run as root. Same file and values as the stuttgart-things/harvester
+# golden image (packer/_build/inotify-limits.sh), so both write the same thing.
+- name: Write inotify limits to /etc/sysctl.d
+  ansible.builtin.copy:
+    dest: "{{ inotify_sysctl_file }}"
+    mode: "0644"
+    content: |
+      # Managed by configure-rke-node
+      fs.inotify.max_user_instances = {{ inotify_max_user_instances }}
+      fs.inotify.max_user_watches = {{ inotify_max_user_watches }}
+  register: inotify_sysctl
   tags:
-    - swap
+    - inotify
+
+- name: Apply the inotify limits now
+  ansible.builtin.command: "sysctl -p {{ inotify_sysctl_file }}"
+  when: inotify_sysctl is changed
+  tags:
+    - inotify
