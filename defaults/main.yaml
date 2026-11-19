@@ -31,6 +31,10 @@ fw_ports_tcp:
   - 9345
   - 9443
   - 9796
+  # Cilium agent / operator / hubble / envoy metrics (9962 agent, 9963
+  # operator, 9964 envoy, 9965 hubble) -- scraped by Prometheus;
+  # stuttgart-things/harvester#602, #753
+  - "{{ '9962-9965' if ansible_os_family == 'RedHat' else '9962:9965' }}"
   - 10250
   - 10252
   - 10254
