@@ -16,6 +16,10 @@ prerequisites:
   - unzip
   - jq
 
+# inotify limits, written to inotify_sysctl_file (tasks/set-filesystem.yaml)
+inotify_sysctl_file: /etc/sysctl.d/90-inotify.conf
+inotify_max_user_instances: 8192
+inotify_max_user_watches: 524288
 cloud_init_config_dir: /etc/cloud/cloud.cfg.d
 modules_conf_path: /etc/modules-load.d/modules.conf
 fw_ports_tcp:
